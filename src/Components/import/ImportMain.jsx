@@ -1,5 +1,5 @@
 import React from "react";
-import ImportComponent from "./ImportComponent";
+import ImportComponent from "./ImportComponent.tsx";
 
 const ImportMain = () => {
   return <ImportComponent />;

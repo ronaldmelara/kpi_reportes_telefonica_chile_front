@@ -19,10 +19,11 @@ const ImportComponent = () => {
     ddDatasources: null,
     file: null,
   });
-  const [selectDatasource, setSelectDatasource] = useState(null);
-  const [selectReporte, setSelectReporte] = useState(null);
-  const [filterDsr, setFilterDsr] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState("");
+  
+  const [selectDatasource, setSelectDatasource] = useState<{name:string, code:string,parentId:string}>();
+  const [selectReporte, setSelectReporte] = useState<{name: string, code: string}>();
+  const [listDatasources, setListDatasources] = useState<{name:string, code:string,parentId:string}[]>([]);
+  const [selectedMonth, setSelectedMonth] = useState<{value:string,label:string}>();
 
   const ReportType = [
     { name: "Reporte Incidencias y Requerimientos", code: "1" },
@@ -31,11 +32,7 @@ const ImportComponent = () => {
   ];
 
   const ReportDatasource = [
-    {
-      name: "Remedy -> INC Diario- Ingeniería de Sistemas",
-      code: "1",
-      parentId: "1",
-    },
+    { name: "Remedy -> INC Diario- Ingeniería de Sistemas", code: "1", parentId: "1",},
     { name: "Externo -> IYR INGSYS (semanal)", code: "2", parentId: "1" },
     { name: "Externo -> IYR INGSYS (mensual)", code: "3", parentId: "1" },
     { name: "Remedy -> INGENIERIA TASK", code: "4", parentId: "2" },
@@ -47,7 +44,7 @@ const ImportComponent = () => {
 
   useEffect(() => {
     if (selectReporte != null) {
-      setFilterDsr(
+      setListDatasources(
         ReportDatasource.filter(
           (option) => option.parentId === selectReporte.code
         )
@@ -63,15 +60,12 @@ const ImportComponent = () => {
     }
   };
 
-  const isFormFieldValid = (meta) =>
-    !!(errors != null && errors.hasOwnProperty(meta) && errors[meta] != null);
+  const isFormFieldValid = (meta:string) =>
+  !!(errors != null && Object.prototype.hasOwnProperty.call(errors, meta) && errors[meta] != null);
 
-  const getFormErrorMessage = (inputname) => {
-    if (
-      errors != null &&
-      errors.hasOwnProperty(inputname) &&
-      errors[inputname] != null
-    ) {
+
+  const getFormErrorMessage = (inputname: string) => {
+    if (errors != null && Object.prototype.hasOwnProperty.call(errors, inputname)) {
       return <small className="p-error">{errors[inputname]}</small>;
     }
     return <></>;
@@ -125,7 +119,7 @@ const ImportComponent = () => {
               <Dropdown
                 onChange={(e) => setSelectDatasource(e.target.value)}
                 value={selectDatasource}
-                options={filterDsr}
+                options={listDatasources}
                 optionLabel="name"
                 placeholder="Seleccione una opción"
                 className={
