@@ -1,0 +1,86 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');*/
+
+/**{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}*/
+@font-face {
+  font-family: "Telefonica Sans";
+  src: url("../src/fonts/eot/Telefonica_Sans_Bold.eot"),
+    url("../src/fonts/woff2/Telefonica_Sans_Regular.woff2"),
+    url("../src/fonts/woff2/Telefonica_Sans_Bold.woff2"),
+    url("../src/fonts/woff2/Telefonica_Sans_Light.woff2");
+}
+
+* {
+  font-family: "Telefonica Sans";
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0066ff;
+  padding: 15px;
+}
+
+.title {
+  color: #e6e4e5;
+}
+
+#logo {
+  object-fit: contain;
+}
+
+.username {
+  color: #e6e4e5;
+  font-weight: 200;
+  font-style: normal;
+  font-family: "Telefonica Sans";
+  margin: 0;
+  display: inline-flex;
+  vertical-align: top;
+  padding: 0.75rem 1.25rem;
+}
+
+.font-navbar {
+  color: #e6e4e5;
+  font-weight: 200;
+  font-style: normal;
+  font-family: "Telefonica Sans";
+}
+body {
+  /*font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;*/
+
+  /*display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: seagreen;*/
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/*code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+*/
+
+.wave-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #0a5ea4, #51a7c0);
+  transform-origin: center bottom;
+  z-index: -1;
+}

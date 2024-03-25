@@ -1,0 +1,18 @@
+.wrapper{
+    width: 420px;
+    background: #fcfcfc;
+    color: #505050 ;
+    border-radius: 10px;
+    padding: 30px 40px;
+
+
+}
+.wrapper .card {
+    min-width: 350px;
+}
+.wrapper .card form {
+    margin-top: 2rem;
+}
+.wrapper .card .field {
+    margin-bottom: 1.5rem;
+}
