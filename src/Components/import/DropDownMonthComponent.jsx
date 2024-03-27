@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { Dropdown } from "primereact/dropdown";
-import { classNames } from "primereact/utils";
-import "primeflex/primeflex.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "../StyleCommon.css";
 
 const DropDownMonthComponent = ({ onDropdownChange }) => {
-  const [selectedValue, setSelectedValue] = useState("");
+  /* const [selectedValue, setSelectedValue] = useState("");
+  const [selectedItem, setSelectedItem] = useState(""); */
   const handleChange = (event) => {
+
     const selectedOption = event.target.value;
-    setSelectedValue(selectedOption);
-    onDropdownChange(selectedOption); // Llama a la función del componente principal con el valor seleccionado
+    const selectedAnio = event.target.options[event.target.selectedIndex].text;
+   /*  setSelectedValue(selectedOption);
+    setSelectedItem(event.target.options[event.target.selectedIndex].text); */
+    onDropdownChange(selectedOption, selectedAnio); // Llama a la función del componente principal con el valor seleccionado
   };
 
   // Función para obtener la fecha formateada
@@ -50,23 +52,21 @@ const DropDownMonthComponent = ({ onDropdownChange }) => {
   };
 
   const months = [
-    { value: "", label: "Seleccione un mes" },
     { value: getCurrentMonth(), label: getFormattedDate(0) },
     { value: getPreviousMonth(), label: getFormattedDate(-1) },
   ];
   return (
-    <div className="col-12 md:col-9">
-      <Dropdown
-        onChange={handleChange}
-        options={months}
-        optionLabel="label"
-        value={selectedValue}
-        placeholder="Seleccione un mes"
-        id="ddlMes"
-        name="ddlMes"
-        className=" w-full md:w-14rem"
-      />
-    </div>
+    <>
+
+    <select id="ddlMeses" className="form-select" onChange={handleChange} required defaultValue={""}>
+                <option value="">Seleccione una opción</option>
+                {months && months.map(item =>(
+                 
+                  <option key={item.value} value={item.value}>{item.label}</option>
+                ))}
+              </select>
+
+    </>
   );
 };
 

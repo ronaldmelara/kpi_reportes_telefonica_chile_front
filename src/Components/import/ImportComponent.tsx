@@ -1,182 +1,221 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Panel } from "primereact/panel";
-import { Dropdown } from "primereact/dropdown";
+
 import { useLocation } from "react-router-dom";
-import { Button } from "primereact/button";
-import { Toast } from "primereact/toast";
-import { classNames } from "primereact/utils";
-import "primeflex/primeflex.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "../StyleCommon.css";
 import DropDownMonthComponent from "./DropDownMonthComponent";
+import useFeth2 from "../../hook/useFetch2.ts";
+import axios, {AxiosRequestConfig} from "axios";
 
 const ImportComponent = () => {
-  const toast = useRef(null);
   const formRef = useRef(null); // Referencia al formulario
   const { state } = useLocation();
-  const [errors, setErrors] = useState(null);
-  const [inputFields, setInputFields] = useState({
-    ddTipoArchivo: null,
-    ddDatasources: null,
-    file: null,
-  });
-  
-  const [selectDatasource, setSelectDatasource] = useState<{name:string, code:string,parentId:string}>();
-  const [selectReporte, setSelectReporte] = useState<{name: string, code: string}>();
-  const [listDatasources, setListDatasources] = useState<{name:string, code:string,parentId:string}[]>([]);
-  const [selectedMonth, setSelectedMonth] = useState<{value:string,label:string}>();
 
-  const ReportType = [
-    { name: "Reporte Incidencias y Requerimientos", code: "1" },
-    { name: "Cuandro de Mando", code: "2" },
-    { name: "Control de Cambios", code: "3" },
-  ];
+  const [selectDatasource, setSelectDatasource] = useState<string>();
+  const [selectReporte, setSelectReporte] = useState<string>();
+  const [listDatasources, setListDatasources] = useState<{id:number, value:string,idParent:number}[]>([]);
+  const [selectedMonth, setSelectedMonth] = useState<string>();
+  const [selectedAnio, setSelectedAnio] = useState<string>();
+  const [selectedFile, setSelectedFile] = useState<any>();
+  const [isLoading, setLoading] = useState<boolean>(false);
 
-  const ReportDatasource = [
-    { name: "Remedy -> INC Diario- Ingeniería de Sistemas", code: "1", parentId: "1",},
-    { name: "Externo -> IYR INGSYS (semanal)", code: "2", parentId: "1" },
-    { name: "Externo -> IYR INGSYS (mensual)", code: "3", parentId: "1" },
-    { name: "Remedy -> INGENIERIA TASK", code: "4", parentId: "2" },
-  ];
 
-  const handleDropdownMesChange = (value) => {
+  const { data : ReportType ,loading : reportLoading, error : reportError } = useFeth2(process.env.REACT_APP_JAVA_API_URL_CATALOG + "/reports", state.token);
+  const { data: ReportDatasource , loading: dsrcLoading, error: dsrcError } = useFeth2(process.env.REACT_APP_JAVA_API_URL_CATALOG + "/datasource", state.token);
+
+
+  const handleDropdownMesChange = (value:string, item:string) => {
+    setSelectedAnio(item.substring(0,4));
     setSelectedMonth(value);
   };
 
   useEffect(() => {
+    // Este efecto se ejecuta cada vez que isLoading cambia
+    if (isLoading) {
+      // Aquí puedes agregar lógica adicional cuando isLoading cambia a true
+      // Por ejemplo, puedes deshabilitar el botón aquí
+      console.log("Loading is true");
+    } else {
+      // Aquí puedes agregar lógica adicional cuando isLoading cambia a false
+      // Por ejemplo, puedes habilitar el botón aquí
+      console.log("Loading is false");
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+   
     if (selectReporte != null) {
-      setListDatasources(
-        ReportDatasource.filter(
-          (option) => option.parentId === selectReporte.code
-        )
-      );
+      const idReport = ReportType.filter((op)=> op.id == selectReporte)?.[0];
+      if(idReport){
+        setListDatasources(
+          ReportDatasource.filter(
+            (option) => option.idParent === idReport.id
+          )
+        );
+      }
+      
     }
   }, [selectReporte]);
 
-  const handleChange = (e) => {
-    if (e.target != null && e.target.type === "file") {
-      setInputFields({ ...inputFields, [e.target.name]: e.target.files });
-    } else {
-      setInputFields({ ...inputFields, [e.target.name]: e.target.value });
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+
+      if (!form.checkValidity()) {
+       /*  event.preventDefault(); */
+        event.stopPropagation();
+      }
+      else{
+
+       // Deshabilitar el botón y mostrar el spinner
+       const button = event.currentTarget;
+       button.setAttribute('disabled', true);
+       button.innerHTML = `
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Cargando...`;
+        const formData = new FormData();
+
+
+        if(selectedFile && selectDatasource && selectReporte && selectedMonth && formRef && selectedAnio){
+          formData.append("file", selectedFile);
+          formData.append("idDatasource", selectDatasource);
+          formData.append("nombreArchivo", selectedFile.name);
+          formData.append("usuarioCarga", state.userid);
+          formData.append("mes", selectedMonth);
+          formData.append("anio", selectedAnio);
+          formData.append("idTipoReporte", selectReporte);
+          
+
+          axios
+          .post("http://localhost:8080/api/v1/import", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${state.token}`,
+            },
+            withCredentials: true,
+          })
+          .then((response) => {
+
+            console.log(response);
+            
+          })
+          .catch((error) => {
+ 
+            console.log(error);
+          })
+          .finally(()=>{
+            button.removeAttribute('disabled');
+            button.innerHTML = 'Importar';
+          }
+            
+          );
+  
+         
+          console.log(isLoading);
+           // Resetear el formulario después del envío exitoso
+           form.classList.add('was-validated');
+           /* formRef.current.reset(); */
+        }
+
+        
+      }
+      
+  
+
+      
+    };
+
+
+  const handleChangeSelectedFile = (e) => {
+
+    if(e.target != null){
+      setSelectedFile(e.target.files[0]);
     }
   };
 
-  const isFormFieldValid = (meta:string) =>
-  !!(errors != null && Object.prototype.hasOwnProperty.call(errors, meta) && errors[meta] != null);
-
-
-  const getFormErrorMessage = (inputname: string) => {
-    if (errors != null && Object.prototype.hasOwnProperty.call(errors, inputname)) {
-      return <small className="p-error">{errors[inputname]}</small>;
-    }
-    return <></>;
-  };
-
+  
   return (
-    <div className="flex align-items-stretch flex-wrap justify-content-center ">
-      <Toast ref={toast} />
-      <Panel
-        header="Importar Archivo"
-        className="w-full min-w-max min-w-min w-4 col-12"
+    <div className="d-flex justify-content-center">
+
+      <div
+        className="card"
       >
-        <form ref={formRef}>
-          <div className="field grid">
-            <label
+        <div className="card-body">
+          <h5 className="card-title">Importar Archivo</h5>
+          <form ref={formRef} className="needs-validation" novalidate>
+          <div className="container">
+            <div className="row mb-3">
+              <label
               htmlFor="ddlTipoReporte"
-              className="col-12 mb-2 md:col-3 md:mb-0"
-            >
+              className="form-label"
+              >
               Reporte
-            </label>
-
-            <div className="col-12 md:col-9">
-              <Dropdown
-                onChange={(e) => setSelectReporte(e.target.value)}
-                options={ReportType}
-                optionLabel="name"
-                value={selectReporte}
-                placeholder="Seleccione una opción"
-                id="ddlTipoReporte"
-                name="ddlTipoReporte"
-                className={
-                  classNames({
-                    "p-invalid": isFormFieldValid("ddlTipoReporte"),
-                  }) + " w-full md:w-14rem"
-                }
-              />
-              <br />
-              {getFormErrorMessage("ddlTipoReporte")}
+              </label>
+              <select id="ddlTipoReporte" className="form-select" onChange={(e) => {setSelectReporte(e.target.value)}} defaultValue={""} required>
+                  <option value="">Seleccione una opción</option>
+                  {ReportType && ReportType.map(item =>(
+                  
+                    <option key={item.id} value={item.id}>{item.value}</option>
+                  ))}
+              </select>
+              <div className="invalid-feedback">
+                Please select a valid state.
+              </div>
             </div>
-          </div>
-
-          <div className="field grid show-element">
-            <label
+            <div className="row mb-3">
+              <label
               htmlFor="ddDataSources"
-              className="col-12 mb-2 md:col-3 md:mb-0"
-            >
+              className="form-label"
+              >
               Datasource
-            </label>
-
-            <div className="col-12 md:col-9">
-              <Dropdown
-                onChange={(e) => setSelectDatasource(e.target.value)}
-                value={selectDatasource}
-                options={listDatasources}
-                optionLabel="name"
-                placeholder="Seleccione una opción"
-                className={
-                  classNames({
-                    "p-invalid": isFormFieldValid("ddDataSources"),
-                  }) + " w-full md:w-14rem"
-                }
-                id="ddDataSources"
-                name="ddDataSources"
-              />
-              <br />
-              {getFormErrorMessage("ddDatasources")}
+              </label>
+              <select id="ddDataSources" className="form-select" onChange={(e) => {setSelectDatasource(e.target.value)} } defaultValue={""} required>
+                <option value="">Seleccione una opción</option>
+                {listDatasources && listDatasources.map(item =>(
+                 
+                  <option key={item.id} value={item.id}>{item.value}</option>
+                ))}
+              </select>
             </div>
-          </div>
-
-          <div className="field grid show-element">
-            <label htmlFor="ddMes" className="col-12 mb-2 md:col-3 md:mb-0">
-              Mes
-            </label>
-
-            <DropDownMonthComponent
+            
+            <div className="row mb-3">
+              <label htmlFor="ddMes" className="form-label">
+                Mes
+              </label>
+              <DropDownMonthComponent 
               onDropdownChange={handleDropdownMesChange}
-            />
-            <br />
-            {getFormErrorMessage("ddDatasources")}
-          </div>
+              />
 
-          <div className="field grid">
-            <div className="col-12 md:col-12">
-              <input
+            </div>
+          
+            <div className="row mb-3">
+            <input
+            id="file"
                 type="file"
                 name="file"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChangeSelectedFile(e)}
                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                className={classNames({
-                  "p-invalid": isFormFieldValid("file"),
-                })}
+                required
               />
-              <br />
-              {getFormErrorMessage("file")}
             </div>
-          </div>
-          <div className="field grid">
-            <div className="col-12 mb-2 md:col-12 md:mb-0">
-              <Button
-                label="Cargar Archivo"
-                severity="success"
-                aria-label="Filter"
-                //onClick={(e) => onSubmit(e)}
-                size="small"
-                className="w-full"
-                type="submit"
-              ></Button>
+            <div className="row mb-3">
+                  <button type="submit" className="btn btn-primary" onClick={handleSubmit}
+                 >
+                     Importar
+                  </button>
             </div>
+           
           </div>
+
+
+
+       
+
         </form>
-      </Panel>
+        </div>
+      
+        
+      </div>
     </div>
   );
 };

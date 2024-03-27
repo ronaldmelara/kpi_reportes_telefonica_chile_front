@@ -12,7 +12,8 @@ import { Toast } from "primereact/toast";
 
 import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
-import useFetch from "../hook/useFetch";
+
+import axios from "axios";
 
 export const LoginPage = () => {
   const [formData, setFormData] = useState({});
@@ -25,8 +26,7 @@ export const LoginPage = () => {
     password: "",
   });
 
-  const { response, fetchData, callStatus, loading, errorResponse } =
-    useFetch();
+
 
   const validate = (data) => {
     let errors = {};
@@ -45,8 +45,10 @@ export const LoginPage = () => {
   const handleClick = (data, form) => {
     setFormData(data);
 
-    fetchData(
-      "http://localhost:8080/auth/login",
+   const fd = async()=>{
+    try{
+       
+      const res = await axios.post("http://localhost:8080/auth/login",
       {
         username: data.username,
         password: data.password,
@@ -58,14 +60,38 @@ export const LoginPage = () => {
             "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
           "Content-Type": "application/json",
         },
-      },
-      "POST"
-    );
+      });
 
-    form.restart();
+      
+      if (res && res.data) {
+
+        navigate("/dashboard", {
+          replace: true,
+          state: {
+            logged: true,
+            username: data.username,
+            token: res.data.token,
+            userid: res.data.userid,
+          },
+        });
+      }
+      }catch(err){
+        
+      }
+      finally{
+        
+        
+
+        form.restart(); 
+      }
+   }
+    
+   fd();
+
+    
   };
 
-  if (errorResponse != null && callStatus === "error") {
+  /* if (errorResponse != null && callStatus === "error") {
     console.log("error");
     toast.current.show({
       severity: "error",
@@ -74,8 +100,8 @@ export const LoginPage = () => {
       life: 3000,
     });
     console.log(errorResponse);
-  }
-
+  } */
+/* 
   if (response && callStatus === "success") {
     if (response) {
       var token = response.token;
@@ -89,7 +115,7 @@ export const LoginPage = () => {
         },
       });
     }
-  }
+  } */
 
   const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
   const getFormErrorMessage = (meta) => {
@@ -100,13 +126,13 @@ export const LoginPage = () => {
 
   return (
     <div className="flex align-items-stretch flex-wrap justify-content-center ">
-      <BlockUI blocked={loading} fullScreen />
+     {/*  <BlockUI blocked={loading} fullScreen /> */}
       <Toast ref={toast} />
-      {callStatus === "loading" && <div>Cargando...</div>}
+   {/*    {callStatus === "loading" && <div>Cargando...</div>}
       {callStatus === "success" && <div>La llamada se completó con éxito.</div>}
       {callStatus === "error" && (
         <div>Ocurrió un error al realizar la llamada.</div>
-      )}
+      )} */}
 
       <div className="flex justify-content-center ">
         <div className="card">

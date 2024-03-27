@@ -2,6 +2,7 @@
 import axios from "axios";
 
 const addAuthorizationHeader = (config, token) => {
+  console.log('entro');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
     config.withCredentials = true;
