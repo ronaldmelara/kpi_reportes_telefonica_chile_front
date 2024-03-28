@@ -1,0 +1,20 @@
+.spanCustom {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .spanRow{
+    display: table-row;
+  }
+
+  .navlink-padding {
+    padding-left: 5px;
+    padding-right: 5px; /* Ajusta el valor según tus necesidades */
+    color: white; /* Fondo blanco por defecto */
+    text-decoration: none;
+  }
+  
+  .navlink-padding:hover {
+    color: yellow; /* Cambia el fondo a amarillo al pasar el ratón */
+  }

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const LoginPage = () => {
+  sessionStorage.clear();
   const [formData, setFormData] = useState({});
   const toast = useRef(null);
 
@@ -64,6 +65,10 @@ export const LoginPage = () => {
 
       
       if (res && res.data) {
+        sessionStorage.setItem('token', res.data.token);
+        sessionStorage.setItem('logged', "true");
+        sessionStorage.setItem('loguseridged', res.data.userid);
+        sessionStorage.setItem('username', data.username);
 
         navigate("/dashboard", {
           replace: true,
@@ -125,19 +130,17 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="flex align-items-stretch flex-wrap justify-content-center ">
-     {/*  <BlockUI blocked={loading} fullScreen /> */}
-      <Toast ref={toast} />
-   {/*    {callStatus === "loading" && <div>Cargando...</div>}
-      {callStatus === "success" && <div>La llamada se completó con éxito.</div>}
-      {callStatus === "error" && (
-        <div>Ocurrió un error al realizar la llamada.</div>
-      )} */}
 
-      <div className="flex justify-content-center ">
-        <div className="card">
-          <h1>SMART</h1>
-          <Form
+
+<div class="login"> 
+<Toast ref={toast} />
+<h1>Login</h1>
+   {/*  <form method="post">
+    	<input type="text" name="u" placeholder="Username" required="required" />
+        <input type="password" name="p" placeholder="Password" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+    </form> */}
+    <Form
             onSubmit={handleClick}
             initialValues={{ username: "", password: "" }}
             validate={validate}
@@ -182,6 +185,7 @@ export const LoginPage = () => {
                           id="password"
                           {...input}
                           toggleMask
+                          feedback={false}
                           className={classNames({
                             "p-invalid": isFormFieldValid(meta),
                           })}
@@ -208,8 +212,8 @@ export const LoginPage = () => {
               </form>
             )}
           />
-        </div>
-      </div>
-    </div>
+</div>
+/* 
+    </div> */
   );
 };
