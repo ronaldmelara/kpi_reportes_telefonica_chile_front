@@ -148,7 +148,7 @@ const ImportComponent = () => {
                 <div className="row mb-3">
                   <label
                     htmlFor="ddlTipoReporte"
-                    className="form-label"
+                    className="form-label text-secondary"
                   >
                     Reporte
                   </label>
@@ -166,7 +166,7 @@ const ImportComponent = () => {
                 <div className="row mb-3">
                   <label
                     htmlFor="ddDataSources"
-                    className="form-label"
+                    className="form-label text-secondary"
                   >
                     Datasource
                   </label>
@@ -180,7 +180,7 @@ const ImportComponent = () => {
                 </div>
 
                 <div className="row mb-3">
-                  <label htmlFor="ddMes" className="form-label">
+                  <label htmlFor="ddMes" className="form-label text-secondary">
                     Mes
                   </label>
                   <DropDownMonthComponent
@@ -218,10 +218,10 @@ const ImportComponent = () => {
         <div className="toast border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
 
           <div className={`toast-header bg-${toastType} text-white`}>
-            <img src="..." className="rounded me-2" alt="..."/>
-              <strong className="me-auto">Status Process</strong>
-              <small className="text-muted">Hace 11 minutos</small>
-              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick={() => setShowToast(false)}></button>
+            <img src="..." className="rounded me-2" alt="..." />
+            <strong className="me-auto">Status Process</strong>
+            <small className="text-muted">Hace 11 minutos</small>
+            <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick={() => setShowToast(false)}></button>
           </div>
           <div className="toast-body">
             {toastMessage}

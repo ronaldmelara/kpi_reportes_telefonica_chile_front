@@ -4,43 +4,40 @@ import { Navbar } from "../Components/Navbar/Navbar";
 import { HomePage } from "../pages/HomePage";
 import { DashboardPage } from "../pages/DashboardPage";
 import { LoginPage } from "../pages/LoginPage";
-import { RegisterPage } from "../pages/RegisterPage";
-import  PrivateRoute  from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
-import AppRouter2 from "./AppRouter2";
-
+import PrivateRoute from "./PrivateRoute";
+import { ReportsPage } from "../pages/ReportsPage";
 
 export default function AppRouter() {
   return (
 
-<>
+    <>
 
-<Navbar/>
+      <Navbar />
       <Routes>
-        <Route index element={<LoginPage/>} />
+        <Route index element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route element={<PrivateRoute/>}>
-        <Route
-          path="/dashboard"
-          element={
+        <Route element={<PrivateRoute />}>
+          <Route
+            path="/dashboard"
+            element={
               <DashboardPage />
 
-          }
-        />
-        <Route
-          path="/home"
-          element={
+            }
+          />
+          <Route
+            path="/reports"
+            element={
 
-              <HomePage />
+              <ReportsPage />
 
-          }
-        />
+            }
+          />
 
         </Route>
-        
+
       </Routes>
 
-      
-      </>
+
+    </>
   );
 }

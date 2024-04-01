@@ -17,7 +17,7 @@ export const Navbar = () => {
     sessionStorage.clear();
     navigate("/login", { state: { logged: false } });
   };
-console.log( sessionStorage.getItem('logged'));
+  console.log(sessionStorage.getItem('logged'));
 
 
   return (
@@ -28,38 +28,38 @@ console.log( sessionStorage.getItem('logged'));
         </Link>
 
         {
-       
-        sessionStorage.getItem('logged')  ? (
-          <nav>
-            <span className="font-navbar username spanRow">
-              <div className="spanCustom">
-              <BsPersonCircle /> {sessionStorage.getItem('username')}</div>
 
-              <div  className="spanCustom">
-              <BsFillCloudUploadFill /> 
-              <NavLink className="navlink-padding" to="dashboard">Importar</NavLink>
-              </div>
+          sessionStorage.getItem('logged') ? (
+            <nav>
+              <span className="font-navbar username spanRow">
+                <div className="spanCustom">
+                  <BsPersonCircle /> {sessionStorage.getItem('username')}</div>
 
-              <div className="spanCustom">
-              <BsFileEarmarkBarGraph /> 
-              <NavLink  className="navlink-padding"  to="home">Reportes</NavLink>
-              </div>
+                <div className="spanCustom">
+                  <BsFillCloudUploadFill />
+                  <NavLink className="navlink-padding" to="dashboard">Importar</NavLink>
+                </div>
+
+                <div className="spanCustom">
+                  <BsFileEarmarkBarGraph />
+                  <NavLink className="navlink-padding" to="reports">Reportes</NavLink>
+                </div>
 
 
-              <div className="spanCustom">
-              <BsKey />
-              </div>
-              <button onClick={handleClickLogout}>Salir</button>
-            </span>|
-           
-          </nav>
-        ) : (
-          <nav>
-            <Link to="/register" className="font-navbar">
-              Registrarse
-            </Link>
-          </nav>
-        )}
+                <div className="spanCustom">
+                  <BsKey />
+                </div>
+                <button onClick={handleClickLogout}>Salir</button>
+              </span>|
+
+            </nav>
+          ) : (
+            <nav>
+              <Link to="/register" className="font-navbar">
+                Registrarse
+              </Link>
+            </nav>
+          )}
       </header>
 
       <Outlet />
