@@ -1,0 +1,32 @@
+.css-1ex1afd-MuiTableCell-root {
+    font-family: "Telefonica Sans" !important;
+    font-weight: 200 !important;
+    font-size: 0.675rem !important;
+    padding: 5px !important;
+}
+
+.css-177gid-MuiTableCell-root {
+    font-family: "Telefonica Sans" !important;
+    font-weight: 200 !important;
+    font-size: 0.675rem !important;
+    padding: 5px !important;
+}
+
+.css-footer-mui {
+    background-color: #D1D5E4;
+}
+
+.css-footer-mui>td {
+    font-weight: bold !important;
+}
+
+
+.css-header-mui {
+    font-family: "Telefonica Sans" !important;
+    background-color: #D1D5E4;
+}
+
+.css-header-mui>tr>th {
+    font-family: "Telefonica Sans" !important;
+    font-weight: bold !important;
+}

@@ -4,7 +4,8 @@ import { Button } from "primereact/button";
 import logo from "../../imgs/ttech_icon.png";
 import { BsPersonCircle } from "react-icons/bs";
 import { BsFileEarmarkBarGraph } from "react-icons/bs";
-import { BsFillCloudUploadFill } from "react-icons/bs";
+import { FaWindowClose } from "react-icons/fa";
+import { TbDatabaseImport } from "react-icons/tb";
 import { BsKey } from "react-icons/bs";
 import "./navbar.css";
 import { HomePage } from "../../pages/HomePage";
@@ -36,7 +37,7 @@ export const Navbar = () => {
                   <BsPersonCircle /> {sessionStorage.getItem('username')}</div>
 
                 <div className="spanCustom">
-                  <BsFillCloudUploadFill />
+                  <TbDatabaseImport />
                   <NavLink className="navlink-padding" to="dashboard">Importar</NavLink>
                 </div>
 
@@ -47,9 +48,9 @@ export const Navbar = () => {
 
 
                 <div className="spanCustom">
-                  <BsKey />
+                  <FaWindowClose />
+                  <a href="" onClick={handleClickLogout} className="navlink-padding">Salir</a>
                 </div>
-                <button onClick={handleClickLogout}>Salir</button>
               </span>|
 
             </nav>

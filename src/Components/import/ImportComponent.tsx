@@ -6,6 +6,8 @@ import "../StyleCommon.css";
 import DropDownMonthComponent from "./DropDownMonthComponent";
 import useFeth2 from "../../hook/useFetch2.ts";
 import axios, { AxiosRequestConfig } from "axios";
+import { TbDatabaseImport } from "react-icons/tb";
+
 
 const ImportComponent = () => {
   const formRef = useRef(null); // Referencia al formulario
@@ -139,7 +141,7 @@ const ImportComponent = () => {
   return (
     <>
 
-      <div className="d-flex justify-content-center">
+      <div className="container">
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">Importar Archivo</h5>
@@ -199,11 +201,13 @@ const ImportComponent = () => {
                     required
                   />
                 </div>
-                <div className="row mb-3">
-                  <button type="submit" className="btn btn-primary" onClick={handleSubmit}
-                  >
-                    Importar
-                  </button>
+                <div className="row mb-3 justify-content-end">
+                  <div className='col-3'>
+                    <button type="submit" className="btn btn-primary w-100 p-3" onClick={handleSubmit}
+                    >
+                      <TbDatabaseImport /> Importar
+                    </button>
+                  </div>
                 </div>
 
               </div>

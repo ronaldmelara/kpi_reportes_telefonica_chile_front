@@ -162,18 +162,20 @@ const ImportedListComponent = () => {
 
     return (
         <>
+            <div className="container mt-5">
+                <div className="card">
 
-            <div className="card">
-
-                <div className="card-body">
-                    <h5 className="card-title">Historial Cargas</h5>
-                    {pending ? (
-                        <p>Cargando...</p>
-                    ) : (
-                        <DataTable columns={columns} data={rows} pagination />
-                    )}
+                    <div className="card-body">
+                        <h5 className="card-title">Historial Cargas</h5>
+                        {pending ? (
+                            <p>Cargando...</p>
+                        ) : (
+                            <DataTable columns={columns} data={rows} pagination />
+                        )}
+                    </div>
                 </div>
             </div>
+
 
 
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BiSearchAlt } from "react-icons/bi";
 import useFeth2 from "../hook/useFetch2.ts";
+import { IncTable01Component } from '../Components/reports/IncTable01Component.tsx';
 
 export const ReportsPage = () => {
     const [selectReporte, setSelectReporte] = useState();
@@ -9,17 +11,6 @@ export const ReportsPage = () => {
     const token = sessionStorage.getItem('token') != null ? sessionStorage.getItem('token')?.toString() : "";
     const { data: ReportType, loading: reportLoading, error: reportError } = useFeth2(process.env.REACT_APP_JAVA_API_URL_CATALOG + "/reports", token);
 
-
-    /* const fetchPeriodos = async (reportId) => {
-        const { data: rows, loading: loading, error: error } = useFeth2(process.env.REACT_APP_JAVA_API_URL_CATALOG + "/periodos/" + reportId, token);
-        return rows, loading, error;
-    };
-
-    useEffect(() => {
-        if (selectReporte) {
-            const { data, loading, error } = fetchPeriodos(selectReporte);
-        }
-    }, [selectReporte, token]); */
 
     const fetchPeriodos = async (reportId) => {
         try {
@@ -95,11 +86,17 @@ export const ReportsPage = () => {
                                         Please select a valid state.
                                     </div>
                                 </div>
+                                <div className='row mb-3  justify-content-end'>
+                                    <div className='col-3'>
+                                        <a href="#" className="btn btn-primary w-100 p-3"><BiSearchAlt /> Consultar</a>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </form>
-                        <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" className="btn btn-primary">Go somewhere</a>
+
+                        <IncTable01Component mes={3} anio={2024} />
 
                     </div>
                 </div>

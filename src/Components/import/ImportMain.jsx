@@ -4,15 +4,14 @@ import ImportedListComponent from "./ImportedListComponent.tsx";
 
 const ImportMain = () => {
   return (
-  <>
-  <div className="container mb-5">
-  <ImportComponent />
-  </div>
- <div className="container">
- <ImportedListComponent/>
- </div>
- 
-  </>
+    <>
+      <div className="container mt-5 mb-5">
+        <ImportComponent />
+
+        <ImportedListComponent />
+      </div>
+
+    </>
 
   );
 };
