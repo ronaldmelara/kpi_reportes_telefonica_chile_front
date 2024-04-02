@@ -3,6 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BiSearchAlt } from "react-icons/bi";
 import useFeth2 from "../hook/useFetch2.ts";
 import { IncTable01Component } from '../Components/reports/IncTable01Component.tsx';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
 export const ReportsPage = () => {
     const [selectReporte, setSelectReporte] = useState();
@@ -39,6 +44,12 @@ export const ReportsPage = () => {
     }, [selectReporte]);
 
     const formRef = useRef(null);
+
+    const [value, setValue] = React.useState('1');
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <>
             <div className='container mt-5'>
@@ -96,7 +107,27 @@ export const ReportsPage = () => {
 
                         </form>
 
-                        <IncTable01Component mes={3} anio={2024} />
+                        <Box sx={{ width: '100%', typography: 'body1' }}>
+                            <TabContext value={value}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <TabList onChange={handleChange} aria-label="lab API tabs example" variant='scrollable' scrollButtons="auto">
+                                        <Tab label="INCIDENTES Y REQUERIMIENTOS" value="1" />
+                                        <Tab label="TD REQUERIMIENTOS POR GRUPO" value="2" />
+                                        <Tab label="TD INCIDENCIAS POR GRUPO" value="3" />
+                                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS" value="4" />
+                                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS MANAGED" value="5" />
+                                    </TabList>
+                                </Box>
+                                <TabPanel value="1">
+                                    <IncTable01Component mes={3} anio={2024} />
+
+                                </TabPanel>
+                                <TabPanel value="2">Item Two</TabPanel>
+                                <TabPanel value="3">Item Three</TabPanel>
+                                <TabPanel value="4">Item Three</TabPanel>
+                                <TabPanel value="5">Item Three</TabPanel>
+                            </TabContext>
+                        </Box>
 
                     </div>
                 </div>
