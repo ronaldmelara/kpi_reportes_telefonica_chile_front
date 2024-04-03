@@ -11,6 +11,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import { IncTable02Component } from '../Components/reports/IncTable02Components.tsx';
 import { IncTable03Component } from '../Components/reports/IncTable03Component.tsx';
 import { IncTable04Component } from '../Components/reports/IncTable04Component.tsx';
+import { IncTable05Component } from '../Components/reports/IncTable05Components.tsx';
 
 export const ReportsPage = () => {
     const [selectReporte, setSelectReporte] = useState();
@@ -134,7 +135,9 @@ export const ReportsPage = () => {
                                 <TabPanel value="4">
                                     <IncTable04Component mes={3} anio={2024} />
                                 </TabPanel>
-                                <TabPanel value="5">Item Three</TabPanel>
+                                <TabPanel value="5">
+                                    <IncTable05Component mes={3} anio={2024} />
+                                </TabPanel>
                             </TabContext>
                         </Box>
 
