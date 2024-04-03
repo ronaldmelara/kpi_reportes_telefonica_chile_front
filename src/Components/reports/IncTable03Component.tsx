@@ -9,13 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import useFeth2 from '../../hook/useFetch2.ts';
 import '../reports/IncReports.css';
 
-export const IncTable02Component = (props) => {
+export const IncTable03Component = (props) => {
     const { mes, anio } = props;
     const token = sessionStorage.getItem('token') != null ? sessionStorage.getItem('token')?.toString() : "";
 
 
     const [pending, setPending] = useState<boolean>(true);
-    const { data: rows, loading: loading, error: error } = useFeth2(`${process.env.REACT_APP_JAVA_API_URL_REPORTS}/inc/rpt02/${anio}/${mes}`, token);
+    const { data: rows, loading: loading, error: error } = useFeth2(`${process.env.REACT_APP_JAVA_API_URL_REPORTS}/inc/rpt03/${anio}/${mes}`, token);
 
     function sumTotal(items: readonly any[]) {
         return items.map(({ totalCumplidos }) => totalCumplidos).reduce((sum, i) => sum + i, 0);
