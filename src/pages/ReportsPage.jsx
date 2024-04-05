@@ -15,7 +15,7 @@ import { IncTable05Component } from '../Components/reports/IncTable05Components.
 
 export const ReportsPage = () => {
     const [selectReporte, setSelectReporte] = useState();
-    const [selectPeriodo, setSelectPeriodo] = useState();
+    const [selectPeriodo, setSelectPeriodo] = useState(null);
     const [periodos, setPeriodos] = useState();
     const token = sessionStorage.getItem('token') != null ? sessionStorage.getItem('token')?.toString() : "";
     const { data: ReportType, loading: reportLoading, error: reportError } = useFeth2(process.env.REACT_APP_JAVA_API_URL_CATALOG + "/reports", token);
@@ -54,6 +54,56 @@ export const ReportsPage = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const valPeriodo = () => {
+        let arr = [];
+        if (selectPeriodo != null) {
+            (selectPeriodo.split('-')).forEach((el) => arr.push(Number(el)));
+            return arr;
+        }
+        else {
+            return null;
+        }
+    }
+
+    let component = null;
+    if (selectReporte == "1" & selectPeriodo != null) {
+        let periodFilter = valPeriodo();
+
+        component = <Box sx={{ width: '100%', typography: 'body1' }}>
+            <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <TabList onChange={handleChange} aria-label="lab API tabs example" variant='scrollable' scrollButtons="auto">
+                        <Tab label="INCIDENTES Y REQUERIMIENTOS" value="1" />
+                        <Tab label="TD REQUERIMIENTOS POR GRUPO" value="2" />
+                        <Tab label="TD INCIDENCIAS POR GRUPO" value="3" />
+                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS" value="4" />
+                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS MANAGED" value="5" />
+                    </TabList>
+                </Box>
+                <TabPanel value="1">
+                    <IncTable01Component mes={periodFilter[0]} anio={periodFilter[1]} />
+
+                </TabPanel>
+                <TabPanel value="2">
+                    <IncTable02Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="3">
+                    <IncTable03Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="4">
+                    <IncTable04Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="5">
+                    <IncTable05Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+            </TabContext>
+        </Box>
+    }
+    else {
+        component = <></>;
+    }
+
     return (
         <>
             <div className='container mt-5'>
@@ -88,12 +138,12 @@ export const ReportsPage = () => {
                                     >
                                         Periodo
                                     </label>
-                                    <select id="ddlPeriodos" className="form-select" onChange={(e) => { setSelectPeriodo(e.target.value) }} defaultValue={""} required>
+                                    <select id="ddlPeriodos" className="form-select" onChange={(e) => { setSelectPeriodo(e.target.value != "" ? (e.target.options[e.target.selectedIndex].text) : null); }} defaultValue={""} required>
                                         <option value="">Seleccione una opción</option>
                                         {
 
                                             periodos && periodos.map(item => (
-                                                <option key={item.idReporte} value={item.idReporte}>{item.mes} - {item.anio}</option>
+                                                <option key={item.idReporte} value={item.idReporte}>{String(item.mes).padStart(2, '0')} - {item.anio}</option>
                                             ))
                                         }
                                     </select>
@@ -101,7 +151,7 @@ export const ReportsPage = () => {
                                         Please select a valid state.
                                     </div>
                                 </div>
-                                <div className='row mb-3  justify-content-end'>
+                                <div className='row mb-3  justify-content-end d-none'>
                                     <div className='col-3'>
                                         <a href="#" className="btn btn-primary w-100 p-3"><BiSearchAlt /> Consultar</a>
                                     </div>
@@ -111,35 +161,9 @@ export const ReportsPage = () => {
 
                         </form>
 
-                        <Box sx={{ width: '100%', typography: 'body1' }}>
-                            <TabContext value={value}>
-                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                    <TabList onChange={handleChange} aria-label="lab API tabs example" variant='scrollable' scrollButtons="auto">
-                                        <Tab label="INCIDENTES Y REQUERIMIENTOS" value="1" />
-                                        <Tab label="TD REQUERIMIENTOS POR GRUPO" value="2" />
-                                        <Tab label="TD INCIDENCIAS POR GRUPO" value="3" />
-                                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS" value="4" />
-                                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS MANAGED" value="5" />
-                                    </TabList>
-                                </Box>
-                                <TabPanel value="1">
-                                    <IncTable01Component mes={3} anio={2024} />
 
-                                </TabPanel>
-                                <TabPanel value="2">
-                                    <IncTable02Component mes={3} anio={2024} />
-                                </TabPanel>
-                                <TabPanel value="3">
-                                    <IncTable03Component mes={3} anio={2024} />
-                                </TabPanel>
-                                <TabPanel value="4">
-                                    <IncTable04Component mes={3} anio={2024} />
-                                </TabPanel>
-                                <TabPanel value="5">
-                                    <IncTable05Component mes={3} anio={2024} />
-                                </TabPanel>
-                            </TabContext>
-                        </Box>
+                        {component}
+
 
                     </div>
                 </div>
