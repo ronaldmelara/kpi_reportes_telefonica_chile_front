@@ -12,6 +12,8 @@ import { IncTable02Component } from '../Components/reports/IncTable02Components.
 import { IncTable03Component } from '../Components/reports/IncTable03Component.tsx';
 import { IncTable04Component } from '../Components/reports/IncTable04Component.tsx';
 import { IncTable05Component } from '../Components/reports/IncTable05Components.tsx';
+import { IncTable06Component } from '../Components/reports/IncTable06Components.tsx';
+import { IncTable07Component } from '../Components/reports/IncTable07Components.tsx';
 
 export const ReportsPage = () => {
     const [selectReporte, setSelectReporte] = useState();
@@ -79,6 +81,8 @@ export const ReportsPage = () => {
                         <Tab label="TD INCIDENCIAS POR GRUPO" value="3" />
                         <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS" value="4" />
                         <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS MANAGED" value="5" />
+                        <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS SERVICES DELIVERY" value="6" />
+                        <Tab label="TD TOTAL POR PRIORIDAD" value="7" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -96,6 +100,12 @@ export const ReportsPage = () => {
                 </TabPanel>
                 <TabPanel value="5">
                     <IncTable05Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="6">
+                    <IncTable06Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="7">
+                    <IncTable07Component mes={periodFilter[0]} anio={periodFilter[1]} />
                 </TabPanel>
             </TabContext>
         </Box>

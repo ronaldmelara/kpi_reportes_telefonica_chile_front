@@ -12,6 +12,17 @@
     padding: 5px !important;
 }
 
+.css-177gid-row-grouping {
+    font-family: "Telefonica Sans" !important;
+    font-weight: 200 !important;
+    font-size: 0.685rem !important;
+
+}
+
+.css-177gid-row-grouping>p {
+    margin-bottom: 0 !important;
+}
+
 .css-footer-mui {
     background-color: #D1D5E4;
 }
