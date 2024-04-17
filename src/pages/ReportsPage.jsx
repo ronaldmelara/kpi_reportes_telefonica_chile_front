@@ -14,6 +14,8 @@ import { IncTable04Component } from '../Components/reports/IncTable04Component.t
 import { IncTable05Component } from '../Components/reports/IncTable05Components.tsx';
 import { IncTable06Component } from '../Components/reports/IncTable06Components.tsx';
 import { IncTable07Component } from '../Components/reports/IncTable07Components.tsx';
+import { IncTable08Component } from '../Components/reports/IncTable08Components.tsx';
+import { IncTable09Component } from '../Components/reports/IncTable09Components.tsx';
 
 export const ReportsPage = () => {
     const [selectReporte, setSelectReporte] = useState();
@@ -75,7 +77,7 @@ export const ReportsPage = () => {
         component = <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={handleChange} aria-label="lab API tabs example" variant='scrollable' scrollButtons="auto">
+                    <TabList onChange={handleChange} aria-label="lab API tabs example" variant='scrollable' scrollButtons="auto" indicatorColor="secondary">
                         <Tab label="INCIDENTES Y REQUERIMIENTOS" value="1" />
                         <Tab label="TD REQUERIMIENTOS POR GRUPO" value="2" />
                         <Tab label="TD INCIDENCIAS POR GRUPO" value="3" />
@@ -83,6 +85,10 @@ export const ReportsPage = () => {
                         <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS MANAGED" value="5" />
                         <Tab label="TIEMPO DE RESTAURACIÓN DE INCIDENTES Y REQUERIMIENTOS SERVICES DELIVERY" value="6" />
                         <Tab label="TD TOTAL POR PRIORIDAD" value="7" />
+                        <Tab label="URGENCIA INCIDENTES Y REQUERIMIENTOS CLOUD" value="8" />
+                        <Tab label="URGENCIA INCIDENTES Y REQUERIMIENTOS SERVICE DELIVERY" value="9" />
+                        <Tab label="URGENCIA INCIDENTES Y REQUERIMIENTOS SERVICE MANAGED" value="10" />
+                        <Tab label="URGENCIA INCIDENTES Y REQUERIMIENTOS SERVICE CLOUD" value="11" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -106,6 +112,18 @@ export const ReportsPage = () => {
                 </TabPanel>
                 <TabPanel value="7">
                     <IncTable07Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="8">
+                    <IncTable08Component mes={periodFilter[0]} anio={periodFilter[1]} />
+                </TabPanel>
+                <TabPanel value="9">
+                    <IncTable09Component mes={periodFilter[0]} anio={periodFilter[1]} report="rpt09" />
+                </TabPanel>
+                <TabPanel value="10">
+                    <IncTable09Component mes={periodFilter[0]} anio={periodFilter[1]} report="rpt10" />
+                </TabPanel>
+                <TabPanel value="11">
+                    <IncTable09Component mes={periodFilter[0]} anio={periodFilter[1]} report="rpt11" />
                 </TabPanel>
             </TabContext>
         </Box>

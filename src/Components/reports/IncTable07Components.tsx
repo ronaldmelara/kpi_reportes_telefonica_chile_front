@@ -64,16 +64,16 @@ export const IncTable07Component = (props) => {
 
                             <div className='list-group-item'>
                                 <div className='row'>
-                                    <h5 className="mb-1 bg-light">
+                                    <p className="mb-1 bg-light fs-6">
                                         <div className='row justify-content-between'>
-                                            <div className='col-6'>{prioridad}</div>
-                                            <div className='col-3'>Total: {groupedData[prioridad].total}</div>
+                                            <div className='col-6'><p className='fw-bold bg-light text-dark mb-0'>{prioridad}</p></div>
+                                            <div className='col-3'><p className='fw-bold bg-light text-dark mb-0'>Total: {groupedData[prioridad].total}</p></div>
                                         </div>
-                                    </h5>
+                                    </p>
                                     {groupedData[prioridad].items.map((item) => (
                                         <>
-                                            <div className='col-9'><p className="css-177gid-row-grouping"><small>{item.grupoAsignacion}</small></p></div>
-                                            <div className='col-3'><p className='css-177gid-row-grouping'><small>{item.totalIncidentes}</small></p></div></>
+                                            <div className='col-9'><p className="css-177gid-row-grouping mb-0"><small>{item.grupoAsignacion}</small></p></div>
+                                            <div className='col-3'><p className='css-177gid-row-grouping mb-0'><small>{item.totalIncidentes}</small></p></div></>
 
 
                                     ))}
