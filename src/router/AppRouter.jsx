@@ -6,6 +6,7 @@ import { DashboardPage } from "../pages/DashboardPage";
 import { LoginPage } from "../pages/LoginPage";
 import PrivateRoute from "./PrivateRoute";
 import { ReportsPage } from "../pages/ReportsPage";
+import { EditDataPage } from "../pages/EditDataPage";
 
 export default function AppRouter() {
   return (
@@ -31,6 +32,10 @@ export default function AppRouter() {
               <ReportsPage />
 
             }
+          />
+          <Route
+            path="/edit"
+            element={<EditDataPage />}
           />
 
         </Route>

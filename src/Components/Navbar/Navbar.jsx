@@ -6,7 +6,8 @@ import { BsPersonCircle } from "react-icons/bs";
 import { BsFileEarmarkBarGraph } from "react-icons/bs";
 import { FaWindowClose } from "react-icons/fa";
 import { TbDatabaseImport } from "react-icons/tb";
-import { BsKey } from "react-icons/bs";
+import { FaRegEdit } from "react-icons/fa";
+
 import "./navbar.css";
 import { HomePage } from "../../pages/HomePage";
 
@@ -46,6 +47,10 @@ export const Navbar = () => {
                   <NavLink className="navlink-padding" to="reports">Reportes</NavLink>
                 </div>
 
+                <div className="spanCustom">
+                  <FaRegEdit />
+                  <NavLink className="navlink-padding" to="edit">Editar</NavLink>
+                </div>
 
                 <div className="spanCustom">
                   <FaWindowClose />
