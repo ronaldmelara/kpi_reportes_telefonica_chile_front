@@ -34,6 +34,34 @@ const ImportComponent = () => {
     setSelectedMonth(value);
   };
 
+  const validate = () => {
+    const errors = {};
+
+    const form = formRef.current;
+    if (formRef) {
+      if (form.elements["ddlTipoReporte"].value == "") {
+        errors.ddlTipoReporte = "Debe seleccionar reporte a generar";
+      }
+
+      if (form.elements["ddDataSources"].value == "") {
+        errors.ddDataSources = "Debe de seleccionar un origen de datos";
+      }
+
+      if (form.elements["ddlMeses"].value == "") {
+        errors.ddlMeses = "Debe de seleccionar el mes al que pertenece la importación";
+      }
+
+      let fileInput = form.elements["file"].files;
+      if (!fileInput || !fileInput.length) {
+        errors.file = "Debe seleccionar un archivo";
+      }
+
+      return errors;
+    }
+    else {
+      return null;
+    }
+  };
 
   useEffect(() => {
 
@@ -52,11 +80,15 @@ const ImportComponent = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
 
-    if (!form.checkValidity()) {
+    const form = formRef.current;
+
+    const a = validate();
+
+    if (!form || !form.checkValidity()) {
 
       event.stopPropagation();
+      console.log("no hizo nada");
     }
     else {
 
@@ -145,7 +177,7 @@ const ImportComponent = () => {
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">Importar Archivo</h5>
-            <form ref={formRef} className="needs-validation" novalidate>
+            <form ref={formRef} className="needs-validation" noValidate>
               <div className="container">
                 <div className="row mb-3">
                   <label
