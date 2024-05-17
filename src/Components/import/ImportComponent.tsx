@@ -63,6 +63,19 @@ const ImportComponent = () => {
     }
   };
 
+  const removeError = (form: any) => {
+    // Si no hay errores, reseteamos los estilos y enviamos la solicitud
+
+    const elements = form.querySelectorAll('.is-invalid');
+    elements.forEach(element => {
+      element.classList.remove('is-invalid');
+    })
+  }
+
+  const addError = (form: any) => {
+
+  }
+
   useEffect(() => {
 
     if (selectReporte != null) {
@@ -83,69 +96,70 @@ const ImportComponent = () => {
 
     const form = formRef.current;
 
-    const a = validate();
+    const errors = validate();
+    removeError(form);
 
-    if (!form || !form.checkValidity()) {
-
+    if (Object.keys(errors).length > 0) {
       event.stopPropagation();
-      console.log("no hizo nada");
+      Object.keys(errors).forEach(fieldName => {
+        const field = form.elements[fieldName];
+        field.classList.add("is-invalid");
+        const errorFeedback = field.nextElementSibling;
+        if (errorFeedback) {
+          errorFeedback.textContent = errors[fieldName];
+        }
+      });
+      return;
     }
-    else {
 
-      // Deshabilitar el botón y mostrar el spinner
-      const button = event.currentTarget;
-      button.setAttribute('disabled', true);
-      button.innerHTML = `
-      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Cargando...`;
-      const formData = new FormData();
+    // Deshabilitar el botón y mostrar el spinner
+    const button = event.currentTarget;
+    button.setAttribute('disabled', true);
+    button.innerHTML = `
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Cargando...`;
+    const formData = new FormData();
 
-
-      if (selectedFile && selectDatasource && selectReporte && selectedMonth && formRef && selectedAnio) {
-        formData.append("file", selectedFile);
-        formData.append("idDatasource", selectDatasource);
-        formData.append("nombreArchivo", selectedFile.name);
-        formData.append("usuarioCarga", state.userid);
-        formData.append("mes", selectedMonth);
-        formData.append("anio", selectedAnio);
-        formData.append("idTipoReporte", selectReporte);
+    formData.append("file", selectedFile);
+    formData.append("idDatasource", selectDatasource);
+    formData.append("nombreArchivo", selectedFile.name);
+    formData.append("usuarioCarga", state.userid);
+    formData.append("mes", selectedMonth);
+    formData.append("anio", selectedAnio);
+    formData.append("idTipoReporte", selectReporte);
 
 
-        axios
-          .post(process.env.REACT_APP_JAVA_API_URL_IMPORT, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
-          })
-          .then((response) => {
+    axios
+      .post(process.env.REACT_APP_JAVA_API_URL_IMPORT, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
 
-            console.log(response);
-            // Mostrar el toast de éxito
-            showToastM("success", "Importación exitosa");
-          })
-          .catch((error) => {
+        console.log(response);
+        // Mostrar el toast de éxito
+        showToastM("success", "Importación exitosa");
+      })
+      .catch((error) => {
 
-            console.log(error);
-            // Mostrar el toast de error
-            showToastM("error", "Error en la importación");
-          })
-          .finally(() => {
-            button.removeAttribute('disabled');
-            button.innerHTML = 'Importar';
-          }
-
-          );
-
-        // Resetear el formulario después del envío exitoso
-        form.classList.add('was-validated');
-        /* formRef.current.reset(); */
-
+        console.log(error);
+        // Mostrar el toast de error
+        showToastM("error", "Error en la importación");
+      })
+      .finally(() => {
+        button.removeAttribute('disabled');
+        button.innerHTML = 'Importar';
       }
 
+      );
 
-    }
+    // Resetear el formulario después del envío exitoso
+    form.classList.add('was-validated');
+    /* formRef.current.reset(); */
+
 
 
 
@@ -193,9 +207,7 @@ const ImportComponent = () => {
                       <option key={item.id} value={item.id}>{item.value}</option>
                     ))}
                   </select>
-                  <div className="invalid-feedback">
-                    Please select a valid state.
-                  </div>
+                  <div className="invalid-feedback" id="ddlTipoReporteError"></div>
                 </div>
                 <div className="row mb-3">
                   <label
@@ -211,6 +223,7 @@ const ImportComponent = () => {
                       <option key={item.id} value={item.id}>{item.value}</option>
                     ))}
                   </select>
+                  <div className="invalid-feedback" id="ddDataSources"></div>
                 </div>
 
                 <div className="row mb-3">
@@ -220,7 +233,7 @@ const ImportComponent = () => {
                   <DropDownMonthComponent
                     onDropdownChange={handleDropdownMesChange}
                   />
-
+                  <div className="invalid-feedback" id="ddDataSources"></div>
                 </div>
 
                 <div className="row mb-3">
@@ -232,6 +245,7 @@ const ImportComponent = () => {
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     required
                   />
+                  <div className="invalid-feedback" id="fuFile"></div>
                 </div>
                 <div className="row mb-3 justify-content-end">
                   <div className='col-3'>
