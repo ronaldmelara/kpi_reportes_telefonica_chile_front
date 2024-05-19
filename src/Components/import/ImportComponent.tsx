@@ -72,10 +72,6 @@ const ImportComponent = () => {
     })
   }
 
-  const addError = (form: any) => {
-
-  }
-
   useEffect(() => {
 
     if (selectReporte != null) {
@@ -116,7 +112,7 @@ const ImportComponent = () => {
     const button = event.currentTarget;
     button.setAttribute('disabled', true);
     button.innerHTML = `
-    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     Cargando...`;
     const formData = new FormData();
 
@@ -145,9 +141,16 @@ const ImportComponent = () => {
       })
       .catch((error) => {
 
-        console.log(error);
-        // Mostrar el toast de error
-        showToastM("error", "Error en la importación");
+
+
+        if (error.response && error.response.status === 403) {
+          // Redirigir al usuario al inicio de sesión
+          window.location.href = "/login";
+        } else {
+          console.log(error);
+          // Mostrar el toast de error
+          showToastM("error", "Error en la importación");
+        }
       })
       .finally(() => {
         button.removeAttribute('disabled');
@@ -270,7 +273,6 @@ const ImportComponent = () => {
           <div className={`toast-header bg-${toastType} text-white`}>
             <img src="..." className="rounded me-2" alt="..." />
             <strong className="me-auto">Status Process</strong>
-            <small className="text-muted">Hace 11 minutos</small>
             <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick={() => setShowToast(false)}></button>
           </div>
           <div className="toast-body">

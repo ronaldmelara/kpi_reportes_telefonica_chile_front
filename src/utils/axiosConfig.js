@@ -11,19 +11,25 @@ const addAuthorizationHeader = (config, token) => {
 };
 
 const handleAuthorizationError = (error) => {
+
   if (error.response.status === 401) {
     // Manejo de errores de autorización, por ejemplo, redirigir al inicio de sesión
   }
+  console.log(error);
+  console.log('ok');
   return Promise.reject(error);
 };
 
 const createAxiosInstance = (token) => {
   const instance = axios.create();
+  debugger;
   instance.interceptors.request.use((config) =>
     addAuthorizationHeader(config, token)
   );
   instance.interceptors.response.use(
+
     (response) => response,
+
     handleAuthorizationError
   );
 

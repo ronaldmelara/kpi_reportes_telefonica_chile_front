@@ -23,8 +23,13 @@ const useFeth2 = (url: string, token?: string) => {
 
                 setData(res.data);
             } catch (err) {
-                setError(err.message);
-                console.error('Error:', err);
+                if (err.response && err.response.status === 403) {
+                    // Redirigir al usuario al inicio de sesión
+                    window.location.href = "/login";
+                } else {
+                    setError(err.message);
+                    console.error('Error:', err);
+                }
             }
             finally {
                 setLoading(false);

@@ -107,7 +107,7 @@ export const LoginPage = () => {
   return (
 
 
-    <div class="login">
+    <div className="login">
       <Toast ref={toast} />
       <h1>KPI Report</h1>
 

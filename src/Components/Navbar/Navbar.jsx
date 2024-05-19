@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "primereact/button";
 import logo from "../../imgs/ttech_icon.png";
 import { BsPersonCircle } from "react-icons/bs";
 import { BsFileEarmarkBarGraph } from "react-icons/bs";
