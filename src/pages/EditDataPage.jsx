@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BsSearch } from "react-icons/bs";
+import { TfiSave } from "react-icons/tfi";
 import axios from "axios";
 
 export const EditDataPage = () => {
@@ -200,6 +201,41 @@ export const EditDataPage = () => {
             return;
         }
 
+        const json = {
+            ticket: form.elements["txtTicket"].value, e2e: form.elements["txtE2E"].value,
+            sla: form.elements["txtSLA"].value, observaciones: form.elements["txtObservaciones"].value
+        };
+
+        axios.put(process.env.REACT_APP_JAVA_API_URL_IMPORT + "/ticket/review", json, {
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+                Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+        })
+            .then((response) => {
+
+                console.log(response);
+                // Mostrar el toast de éxito
+                //showToastM("success", "Importación exitosa");
+            })
+            .catch((error) => {
+
+
+
+                if (error.response && error.response.status === 403) {
+                    // Redirigir al usuario al inicio de sesión
+                    window.location.href = "/login";
+                } else {
+                    console.log(error);
+                    // Mostrar el toast de error
+                    //showToastM("error", "Error en la importación");
+                }
+            })
+            .finally(() => {
+                //button.removeAttribute('disabled');
+                //button.innerHTML = 'Importar';
+            });
 
 
     }
@@ -268,7 +304,7 @@ export const EditDataPage = () => {
                                                 <div className='col-3'>
                                                     <button type="submit" className="btn btn-primary w-100 p-3" onClick={handleSave}
                                                     >
-                                                        <BsSearch /> Actualizar
+                                                        <TfiSave /> Actualizar
                                                     </button>
                                                 </div>
                                             </div>
